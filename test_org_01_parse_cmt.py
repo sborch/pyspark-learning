@@ -1,6 +1,5 @@
-import platform
-import sys
-
+# import platform
+# import sys
 # print('---------------')
 # print("python version : " + platform.python_version())
 # print("python location: " + sys.executable)
@@ -8,15 +7,6 @@ import sys
 # print(sys.path)
 # print('---------------')
 
-sys.path.insert(0, "/opt/spark/python")
-sys.path.insert(0, "/opt/spark/python/lib/py4j-0.10.6-src.zip")
-
-# sys.path.insert(0, "/home/steve/hadoop-2.8.0")
-# sys.path.insert(0, "/home/steve/hadoop-2.8.0/lib/native")
-
-# print('---------------')
-# print(sys.path)
-# print('---------------')
 
 from pyspark import SparkContext
 from pyspark.sql import SQLContext
@@ -25,14 +15,13 @@ from pyspark.sql import SQLContext
 from pyspark.sql.functions import *
 from pyspark.sql.functions import UserDefinedFunction
 
+
 sc = SparkContext("local", "Simple App")
 
 sqlContext = SQLContext(sc)
 
 data1 = sqlContext.read.format('com.databricks.spark.csv') \
-    .option('header', 'true').load('file:///home/steve/test_org_data.csv')
-
-# print(data1.show(truncate=0))
+    .option('header', 'true').load('file:///home/steve/pyspark-learning/test_org_01_parse_cmt_data.csv')
 
 
 # regex pattern to match '999-9999-9'
@@ -64,7 +53,6 @@ data1 = data1.withColumn('parsed3', regexp_replace('parsed2', '-', ''))
 print(data1.show(truncate=0))
 
 
-
-# data1.registerTempTable('data1_table')
-
-# print(sqlContext.sql('select * from data1_table').show())
+# -----------------------------------------------------------------------------
+# end of file
+# -----------------------------------------------------------------------------

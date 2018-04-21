@@ -1,6 +1,5 @@
-import platform
-import sys
-
+# import platform
+# import sys
 # print('---------------')
 # print("python version : " + platform.python_version())
 # print("python location: " + sys.executable)
@@ -8,15 +7,6 @@ import sys
 # print(sys.path)
 # print('---------------')
 
-sys.path.insert(0, "/opt/spark/python")
-sys.path.insert(0, "/opt/spark/python/lib/py4j-0.10.6-src.zip")
-
-# sys.path.insert(0, "/home/steve/hadoop-2.8.0")
-# sys.path.insert(0, "/home/steve/hadoop-2.8.0/lib/native")
-
-# print('---------------')
-# print(sys.path)
-# print('---------------')
 
 from pyspark import SparkContext
 from pyspark.sql import SQLContext
@@ -44,7 +34,7 @@ sqlContext = SQLContext(sc)
 main_df = sqlContext.read  \
     .format('com.databricks.spark.csv') \
     .option('header', 'true') \
-    .load('file:///home/steve/pyspark-learning-2/test_org_03_duplicates_data.csv')
+    .load('file:///home/steve/pyspark-learning/test_org_03_duplicates_data.csv')
 
 
 # -----------------------------------------------------------------------------
@@ -217,5 +207,5 @@ print(main_df.show())
 # +----+--------+---------------+
 
 # -----------------------------------------------------------------------------
-# end
+# end of file
 # -----------------------------------------------------------------------------
