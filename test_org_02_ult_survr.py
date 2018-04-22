@@ -1,9 +1,9 @@
-# import platform
-# import sys
-# print('---------------')
-# print("python version : " + platform.python_version())
-# print("python location: " + sys.executable)
-# print('---------------')
+import platform
+import sys
+print('---------------')
+print("python version : " + platform.python_version())
+print("python location: " + sys.executable)
+print('---------------')
 # print(sys.path)
 # print('---------------')
 
@@ -86,10 +86,10 @@ ref_df = main_df \
 
 
 # -----------------------------------------------------------------------------
-# Test for missing parent records
+# Test for missing parent records (left join with no match)
 # -----------------------------------------------------------------------------
-#   A,B
-#   B,C    <-- C does not exist in dataset
+#   wrk A,B  <-- B is the parent of A in wrk
+#   ref X,C  <-- B does not exist as a child in ref
 # -----------------------------------------------------------------------------
 joined_df = wrk_df \
     .join(ref_df, wrk_df.wrk_parent == ref_df.ref_child, 'left_outer') \
@@ -99,20 +99,20 @@ if joined_df.count() > 0:
     print(joined_df.show())
     raise RuntimeError("error: missing parent records")
 
-# -----------------------------------------------------------------------------
-# Test for cross-linked records
-# -----------------------------------------------------------------------------
-#   A,B   <-- B is the parent of A
-#   B,A   <-- A is the parent of B
-# -----------------------------------------------------------------------------
+# # -----------------------------------------------------------------------------
+# # Test for cross-linked records
+# # -----------------------------------------------------------------------------
+# #   A,B   <-- B is the parent of A
+# #   B,A   <-- A is the parent of B
+# # -----------------------------------------------------------------------------
 
-joined_df = wrk_df \
-    .join(ref_df, wrk_df.wrk_parent == ref_df.ref_child, 'inner') \
-    .filter(wrk_df.wrk_child == ref_df.ref_parent)
+# joined_df = wrk_df \
+#     .join(ref_df, wrk_df.wrk_parent == ref_df.ref_child, 'inner') \
+#     .filter(wrk_df.wrk_child == ref_df.ref_parent)
 
-if joined_df.count() > 0:
-    print(joined_df.show())
-    raise RuntimeError("error: cross-linked parent-child records exist.")
+# if joined_df.count() > 0:
+#     print(joined_df.show())
+#     raise RuntimeError("error: cross-linked parent-child records exist.")
 
 # -----------------------------------------------------------------------------
 # loop until all wrk_df records have found their ultimate parent
@@ -151,6 +151,24 @@ while(wrk_df.count() > 0):
     #
     # -----------------------------------------------------------------------------
 
+    # -----------------------------------------------------------------------------
+    # Test for cross-linked records
+    # -----------------------------------------------------------------------------
+    #   wrk A,B   <-- B is the parent of A in wrk
+    #   ref B,A   <-- A is the parent of B in ref
+    # -----------------------------------------------------------------------------
+
+    joined_df = wrk_df \
+        .join(ref_df, wrk_df.wrk_parent == ref_df.ref_child, 'inner') \
+        .filter(wrk_df.wrk_child == ref_df.ref_parent)
+
+    if joined_df.count() > 0:
+        print(joined_df.show())
+        raise RuntimeError("error: cross-linked parent-child records exist.")
+
+    # -----------------------------------------------------------------------------
+    # join wrk_parent to ref_child to find the parent of wrk_parent
+    # -----------------------------------------------------------------------------
     joined_df = wrk_df.join(ref_df, wrk_df.wrk_parent == ref_df.ref_child, 'inner')
 
     if debug:

@@ -1,9 +1,9 @@
-# import platform
-# import sys
-# print('---------------')
-# print("python version : " + platform.python_version())
-# print("python location: " + sys.executable)
-# print('---------------')
+import platform
+import sys
+print('---------------')
+print("python version : " + platform.python_version())
+print("python location: " + sys.executable)
+print('---------------')
 # print(sys.path)
 # print('---------------')
 

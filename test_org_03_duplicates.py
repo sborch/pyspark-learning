@@ -1,9 +1,9 @@
-# import platform
-# import sys
-# print('---------------')
-# print("python version : " + platform.python_version())
-# print("python location: " + sys.executable)
-# print('---------------')
+import platform
+import sys
+print('---------------')
+print("python version : " + platform.python_version())
+print("python location: " + sys.executable)
+print('---------------')
 # print(sys.path)
 # print('---------------')
 
@@ -18,11 +18,15 @@ from pyspark.sql.types import *
 from pyspark.sql.functions import *
 from pyspark.sql.functions import UserDefinedFunction
 
+from pyspark.sql.session import SparkSession
+
+from pyspark.sql import Row
+
 # -----------------------------------------------------------------------------
 # initialize
 # -----------------------------------------------------------------------------
 
-debug = False
+debug = True
 
 sc = SparkContext("local", "Simple App")
 
@@ -35,6 +39,14 @@ main_df = sqlContext.read  \
     .format('com.databricks.spark.csv') \
     .option('header', 'true') \
     .load('file:///home/steve/pyspark-learning/test_org_03_duplicates_data.csv')
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------
+# l = [('A'),('B'),('B'),('B'),('C'),('C'),('D')]
+# rdd = sc.parallelize(l)
+# dat = rdd.map(lambda x: Row(item=x[0]))
+# main_df = sqlContext.createDataFrame(dat)
+# -----------------------------------------------------------------------------
 
 
 # -----------------------------------------------------------------------------
